@@ -1,23 +1,16 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Prisma } from '.prisma/client';
 
 export class CreateFilmeDto {
-  @IsString()
+  @IsNotEmpty()
   nome: string;
 
-  @IsString()
   @IsOptional()
   imagem?: string;
 
-  @IsString()
+  @IsNotEmpty()
   data_lancamento: string;
 
-  @IsString()
+  @IsNotEmpty()
   tempo_duracao: string;
-
-  @IsOptional()
-  genero: Prisma.generoUncheckedCreateNestedManyWithoutFilme_filmeTogeneroInput;
-
-  @IsOptional()
-  participante: Prisma.participanteUncheckedCreateNestedManyWithoutFilme_filmeToparticipanteInput;
 }

@@ -6,36 +6,55 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
+  UsePipes,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FilmesService } from './filmes.service';
+
 import { CreateFilmeDto } from './dto/create-filme.dto';
+import { Prisma, filme } from '.prisma/client';
 
 @Controller('filmes')
 export class FilmesController {
   constructor(private readonly filmesService: FilmesService) {}
 
   @Post('post')
-  create(@Body() createFilmeDto: CreateFilmeDto) {
-    return this.filmesService.create(createFilmeDto);
+  @UsePipes(ValidationPipe)
+  async create(@Body() data: CreateFilmeDto): Promise<filme> {
+    return this.filmesService.create(data);
   }
 
   @Get('get')
-  findAll() {
+  @UsePipes(ValidationPipe)
+  async findAll(): Promise<filme[]> {
     return this.filmesService.findAll();
   }
 
   @Get('getById/:id')
-  findOne(@Param('id') id: string) {
+  @UsePipes(ValidationPipe)
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.filmesService.findOne(+id);
   }
 
   @Patch('patch/:id')
-  update(@Param('id') id: string, @Body() updateFilmeDto: CreateFilmeDto) {
-    return this.filmesService.update(+id, updateFilmeDto);
+  @UsePipes(ValidationPipe)
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: CreateFilmeDto,
+  ) {
+    return this.filmesService.update(+id, data);
   }
 
   @Delete('del/:id')
-  remove(@Param('id') id: string) {
+  @UsePipes(ValidationPipe)
+  async remove(@Param('id', ParseIntPipe) id: number) {
     return this.filmesService.remove(+id);
+  }
+
+  @Delete('delAll')
+  @UsePipes(ValidationPipe)
+  async removeAll() {
+    return this.filmesService.removeAll();
   }
 }

@@ -20,8 +20,8 @@ model filme {
 model genero {
   id                  Int    @id @default(autoincrement())
   nome                String
-  filme               Int
-  filme_filmeTogenero filme  @relation(fields: [filme], references: [id], map: "Genero_filme_fkey")
+  filme               Int?
+  filme_filmeTogenero filme?  @relation(fields: [filme], references: [id], map: "Genero_filme_fkey")
 
   @@index([filme], map: "Genero_filme_fkey")
 }
@@ -30,7 +30,7 @@ model participante {
   id                        Int    @id @default(autoincrement())
   nome                      String
   filme                     Int
-  filme_filmeToparticipante filme  @relation(fields: [filme], references: [id], map: "Participante_filme_fkey")
+  filme_filmeToparticipante filme?  @relation(fields: [filme], references: [id], map: "Participante_filme_fkey")
   imagem String
   staff String
   @@index([filme], map: "Participante_filme_fkey")
